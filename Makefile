@@ -6,7 +6,7 @@ SRCDIR = .
 DEPDIR = $(SRCDIR)/.deps
 INCDIR = includes
 
-SRCS = main.c
+SRCS = main.c parsing.c utils.c work.c
 OBJS = $(SRCS:.c=.o)
 
 INCLUDES = -I$(INCDIR)
