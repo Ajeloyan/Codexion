@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 02:28:02 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/04 02:13:06 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/06 20:24:10 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,51 +15,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int	main(int argc, char **argv)
+void cleanup(t_data *table, t_coder *coders)
 {
-	t_data			*table;
-	pthread_mutex_t	print_lock;
-	t_coder			*coders;
-	int				i;
+	int i;
 
 	i = 0;
-	if (argc != 2)
-		return (1);
-	table = parsing(argc, argv);
-	table->dongles = malloc(sizeof(pthread_mutex_t) * table->number_of_coders);
-	while(i < table->number_of_coders)
+	if (table->dongles)
 	{
-		table->dongles = 
+		while (i < table->number_of_coders)
+		{
+			pthread_mutex_destroy(&table->dongles[i]);
+			i++;
+		}
+		free(table->dongles);	
 	}
-	if (!table->dongles)
-		return (1);
-	if (table->number_of_coders == -1)
-		return (1);
-	else
-	{
-		coders = malloc(sizeof(t_coder) * table->number_of_coders);
-		if (!coders)
-			return (1);
-	}
-	pthread_mutex_init(&print_lock, NULL);
-	table->print_lock = &print_lock;
-	while (i < table->number_of_coders)
-	{
-		coders[i].id = i + 1;
-		coders[i].table = table;
-		coders[i].left_dongle = &table->dongles[i];
-		coders[i].right_dongle = &table->dongles[i + 1] % table->number_of_coders;
-		pthread_create(&coders[i].thread, NULL, hello, &coders[i]);
-		i++;
-	}
+	i = 0;
+	pthread_mutex_destroy(&table->print_lock);
+	if (coders)
+		free(coders);
+}
+
+int join_threads(t_data *table, t_coder **coders)
+{
+	int i;
+
 	i = 0;
 	while (i < table->number_of_coders)
 	{
-		pthread_join(coders[i].thread, NULL);
+		pthread_join((*coders)[i].thread, NULL);
 		i++;
-	}    
-	pthread_mutex_destroy(&print_lock);
-	free(coders);
-	free(table);
-	return (EXIT_SUCCESS);
+	}
+	return (0);
+}
+
+int main(int argc, char **argv)
+{
+	t_coder *coders;
+	t_data table;
+
+	if (init_table(&table, argc, argv) != 0)
+		return (1);
+	if (init_coders(&coders, &table) != 0)
+	{
+		cleanup(&table, coders);
+		return (1);
+	}
+	join_threads(&table, &coders);
+	cleanup(&table, coders);
+	return (0);
 }

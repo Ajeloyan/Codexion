@@ -6,53 +6,116 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 16:20:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/03 22:41:13 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/06 20:14:16 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/codexion.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int	int_checker(char *str)
 {
-    int int_value;
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (ft_is_digit(str[i]) != 0)
-			return (-1);
+		if (str[i] < '0' || str[i] > '9')
+            return (1);
 		i++;
 	}
-	int_value = atoi(str);
-    if (int_value <= 0)
-        return (-1);
-    return (int_value);
+	return (0);
 }
 
-
-t_data *parsing(int argc, char **argv)
+int init_dongles(t_data *table)
 {
-    t_data *table;
+    int i;
 
-    (void)argc;
-    // if (argc != 9)
-    //     return (NULL);
-    table = malloc(sizeof(t_data));
-    if (!table)
+    i = 0;
+    table->dongles = malloc(sizeof(pthread_mutex_t) * table->number_of_coders);
+	if (!table->dongles)
+		return (1);
+    while(i < table->number_of_coders)
     {
-        free(table);
-        return (NULL);
+        if(pthread_mutex_init(&table->dongles[i], NULL) != 0)
+            return (1);
+        i++;
     }
-    table->number_of_coders = int_checker(argv[1]);
-    // table->time_to_burnout = int_checker(argv[2]);
-    // table->time_to_compile = int_checker(argv[3]);
-    // table->time_to_debug = int_checker(argv[4]);
-    // table->time_to_refactor = int_checker(argv[5]);
-    // table->number_of_compiles_required = int_checker(argv[6]);
-    // table->dongle_cooldown = int_checker(argv[7]);
-    // table->scheduler = "bonjour";
-    return (table);
+    return (0);
+}
+
+int	parsing(int argc, char **argv)
+{
+	int	i;
+
+	i = 1;
+	if (argc != 9)
+		return (1);
+	while (i < argc - 1)
+	{
+		if (int_checker(argv[i]) == 1)
+			return (1);
+        i++;
+	}
+	return (0);
+}
+
+int check_scheduler(t_data *table, char *scheduler)
+{
+    if (strcmp(scheduler, "fifo") == 0)
+    {
+        table->scheduler = "fifo";
+        return (0);
+    }
+    else if (strcmp(scheduler, "edf") == 0)
+    {
+        table->scheduler = "edf";
+        return (0);
+    }
+    else
+        return (1);
+}
+
+int init_table(t_data *table, int argc, char **argv)
+{
+    
+    if (parsing(argc, argv) != 0)
+        return (1);
+    table->number_of_coders = atoi(argv[1]);
+    table->time_to_burnout = atoi(argv[2]);
+    table->time_to_compile = atoi(argv[3]);
+    table->time_to_debug = atoi(argv[4]);
+    table->time_to_refactor = atoi(argv[5]);
+    table->number_of_compiles_required = atoi(argv[6]);
+    table->dongle_cooldown = atoi(argv[7]);
+    if (check_scheduler(table, argv[8]) != 0)
+        return (1);
+    if(pthread_mutex_init(&table->print_lock, NULL) != 0)
+        return (1);
+    if (init_dongles(table) != 0)
+        return (1);
+    
+    return (0);
+}
+
+int init_coders(t_coder **coders, t_data *table)
+{
+    int i;
+
+    i = 0;
+    *coders = malloc(sizeof(t_coder) * table->number_of_coders);
+	if (!(*coders))
+		return (1);
+    while (i < table->number_of_coders)
+    {
+        (*coders)[i].id = i + 1;
+        (*coders)[i].table = table;
+        (*coders)[i].left_dongle = &table->dongles[i];
+        (*coders)[i].right_dongle = &table->dongles[(i + 1) % table->number_of_coders];
+        pthread_create(&(*coders)[i].thread, NULL, hello, &(*coders)[i]);
+        i++;
+    }
+    return (0);
 }

@@ -6,16 +6,9 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 16:23:26 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/03 16:25:02 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/06 19:46:05 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-
-int ft_is_digit(char c)
-{
-    if (c < '0' || c > '9')
-        return (1);
-    return (0);
-}

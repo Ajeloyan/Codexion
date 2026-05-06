@@ -13,7 +13,7 @@ INCLUDES = -I$(INCDIR)
 
 DEPFLAGS = -MMD -MP -MF $(DEPDIR)/$*.d
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re run
 
 all: $(NAME)
 
@@ -32,3 +32,6 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+run: all
+	./$(NAME) 10 100 100 100 100 4 200 "edf"
