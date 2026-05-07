@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 01:50:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/07 02:13:08 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/07 02:22:20 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_coder
 	t_data			*table;
 	pthread_mutex_t	*left_dongle;
 	pthread_mutex_t	*right_dongle;
+	int				score;
 }					t_coder;
 
 typedef struct s_request

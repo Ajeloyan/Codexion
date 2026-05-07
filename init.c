@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 02:09:00 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/07 02:11:20 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/07 02:18:08 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,15 @@ int init_table(t_data *table, int argc, char **argv)
     if (init_dongles(table) != 0)
         return (1);
     get_start_time(table);
+    return (0);
+}
+
+int init_queue(t_queue *queue, int max_coders)
+{
+    queue = malloc(sizeof(t_queue) * max_coders);
+    if (!queue)
+        return (1);
+    queue->size = 0;
+    queue->capacity = max_coders;
     return (0);
 }

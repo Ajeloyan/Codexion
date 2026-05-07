@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   queue.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 16:23:26 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/06 22:15:45 by ajeloyan         ###   ########.fr       */
+/*   Created: 2026/05/07 02:19:22 by ajeloyan          #+#    #+#             */
+/*   Updated: 2026/05/07 02:28:20 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/codexion.h"
-#include <sys/time.h>
-#include <unistd.h>
-#include <stdio.h>
 
-long get_time(t_data *table)
+
+void entry_queue(t_queue *queue, t_request *rq, int score)
 {
-    struct timeval tv;
-    long current_time;
-
-    gettimeofday(&tv, NULL);
-    current_time = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-    return (current_time - table->start_time);
+    int current 
+    if (queue->size >= queue->capacity)
+        return;
+    queue[queue->size] = &rq;
+    queue->size++;
+    while(rq->timestamp)
 }

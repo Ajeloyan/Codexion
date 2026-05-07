@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 16:20:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/07 02:11:41 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/07 02:16:05 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,6 @@ int	int_checker(char *str)
 	return (0);
 }
 
-
-
-int	parsing(int argc, char **argv)
-{
-	int	i;
-
-	i = 1;
-	if (argc != 9)
-		return (1);
-	while (i < argc - 1)
-	{
-		if (int_checker(argv[i]) == 1)
-			return (1);
-        i++;
-	}
-	return (0);
-}
-
 int check_scheduler(t_data *table, char *scheduler)
 {
     if (strcmp(scheduler, "fifo") == 0)
@@ -64,4 +46,18 @@ int check_scheduler(t_data *table, char *scheduler)
         return (1);
 }
 
+int	parsing(int argc, char **argv)
+{
+	int	i;
 
+	i = 1;
+	if (argc != 9)
+		return (1);
+	while (i < argc - 1)
+	{
+		if (int_checker(argv[i]) == 1)
+			return (1);
+        i++;
+	}
+	return (0);
+}

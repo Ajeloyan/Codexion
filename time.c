@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 02:11:43 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/07 02:13:31 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/07 02:15:23 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,14 @@ void get_start_time(t_data *table)
     gettimeofday(&tv, NULL);
     start_time = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
     table->start_time = start_time;
+}
+
+long get_time(t_data *table)
+{
+    struct timeval tv;
+    long current_time;
+
+    gettimeofday(&tv, NULL);
+    current_time = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+    return (current_time - table->start_time);
 }
