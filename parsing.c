@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 16:20:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/06 20:14:16 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/07 02:11:41 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 
 int	int_checker(char *str)
 {
@@ -29,22 +30,7 @@ int	int_checker(char *str)
 	return (0);
 }
 
-int init_dongles(t_data *table)
-{
-    int i;
 
-    i = 0;
-    table->dongles = malloc(sizeof(pthread_mutex_t) * table->number_of_coders);
-	if (!table->dongles)
-		return (1);
-    while(i < table->number_of_coders)
-    {
-        if(pthread_mutex_init(&table->dongles[i], NULL) != 0)
-            return (1);
-        i++;
-    }
-    return (0);
-}
 
 int	parsing(int argc, char **argv)
 {
@@ -78,44 +64,4 @@ int check_scheduler(t_data *table, char *scheduler)
         return (1);
 }
 
-int init_table(t_data *table, int argc, char **argv)
-{
-    
-    if (parsing(argc, argv) != 0)
-        return (1);
-    table->number_of_coders = atoi(argv[1]);
-    table->time_to_burnout = atoi(argv[2]);
-    table->time_to_compile = atoi(argv[3]);
-    table->time_to_debug = atoi(argv[4]);
-    table->time_to_refactor = atoi(argv[5]);
-    table->number_of_compiles_required = atoi(argv[6]);
-    table->dongle_cooldown = atoi(argv[7]);
-    if (check_scheduler(table, argv[8]) != 0)
-        return (1);
-    if(pthread_mutex_init(&table->print_lock, NULL) != 0)
-        return (1);
-    if (init_dongles(table) != 0)
-        return (1);
-    
-    return (0);
-}
 
-int init_coders(t_coder **coders, t_data *table)
-{
-    int i;
-
-    i = 0;
-    *coders = malloc(sizeof(t_coder) * table->number_of_coders);
-	if (!(*coders))
-		return (1);
-    while (i < table->number_of_coders)
-    {
-        (*coders)[i].id = i + 1;
-        (*coders)[i].table = table;
-        (*coders)[i].left_dongle = &table->dongles[i];
-        (*coders)[i].right_dongle = &table->dongles[(i + 1) % table->number_of_coders];
-        pthread_create(&(*coders)[i].thread, NULL, hello, &(*coders)[i]);
-        i++;
-    }
-    return (0);
-}

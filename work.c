@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 20:07:13 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/06 19:45:11 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/06 22:25:54 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,27 @@
 
 void	*hello(void *arg)
 {
+	int i;
 	int	id;
 	t_coder *coder = (t_coder *)arg;
 
-	id = coder->id;
-	pthread_mutex_lock(&coder->table->print_lock);
-	printf("Codeur n'%d commence a taffer\n", id);
-	pthread_mutex_unlock(&coder->table->print_lock);
-	usleep(500000);
-	pthread_mutex_lock(&coder->table->print_lock);
-	printf("Codeur n'%d a fini de taffer\n", id);
-	pthread_mutex_unlock(&coder->table->print_lock);
+	i = 0;
+	while (i < coder->table->number_of_compiles_required)
+	{
+		id = coder->id;
+		pthread_mutex_lock(&coder->table->print_lock);
+		printf("%ld %d is compiling\n", get_time(coder->table), id);
+		pthread_mutex_unlock(&coder->table->print_lock);
+		usleep((coder->table->time_to_compile) * 1000);
+		pthread_mutex_lock(&coder->table->print_lock);
+		printf("%ld %d is debugging\n", get_time(coder->table), id);
+		pthread_mutex_unlock(&coder->table->print_lock);
+		usleep((coder->table->time_to_debug) * 1000);
+		pthread_mutex_lock(&coder->table->print_lock);
+		printf("%ld %d is refactoring\n", get_time(coder->table), id);
+		pthread_mutex_unlock(&coder->table->print_lock);
+		usleep((coder->table->time_to_refactor) * 1000);
+		i++;
+	}
 	return (NULL);
 }

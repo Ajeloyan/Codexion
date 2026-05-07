@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 01:50:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/06 19:46:16 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/07 02:13:08 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_data
 	char			*scheduler;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*dongles;
+	long			start_time;
 }					t_data;
 
 typedef struct s_coder
@@ -38,10 +39,29 @@ typedef struct s_coder
 	pthread_mutex_t	*right_dongle;
 }					t_coder;
 
+typedef struct s_request
+{
+	int				coder_id;
+	long long		timestamp;
+}					t_request;
+
+typedef struct s_queue
+{
+	t_request		request;
+	int				size;
+	int				capacity;
+}					t_queue;
+
 void				*hello(void *arg);
 int					main(int argc, char **argv);
 
+int					parsing(int argc, char **argv);
+int					check_scheduler(t_data *table, char *scheduler);
+
 int					init_table(t_data *table, int argc, char **argv);
 int					init_coders(t_coder **coders, t_data *table);
+
+void				get_start_time(t_data *table);
+long				get_time(t_data *table);
 
 #endif

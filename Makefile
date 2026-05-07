@@ -6,7 +6,7 @@ SRCDIR = .
 DEPDIR = $(SRCDIR)/.deps
 INCDIR = includes
 
-SRCS = main.c parsing.c utils.c work.c
+SRCS = main.c parsing.c utils.c work.c init.c time.c
 OBJS = $(SRCS:.c=.o)
 
 INCLUDES = -I$(INCDIR)
@@ -34,4 +34,4 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME) 10 100 100 100 100 4 200 "edf"
+	./$(NAME) 10 500 300 100 100 4 200 "edf"
