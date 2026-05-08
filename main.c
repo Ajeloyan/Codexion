@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 02:28:02 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/06 20:24:10 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/08 22:20:12 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void cleanup(t_data *table, t_coder *coders)
 	{
 		while (i < table->number_of_coders)
 		{
-			pthread_mutex_destroy(&table->dongles[i]);
+			pthread_mutex_destroy(&table->dongles[i].lock);
+			pthread_cond_destroy(&table->dongles[i].cond);
+			if (table->dongles[i].queue.request)
+				free(table->dongles[i].queue.request);
 			i++;
 		}
 		free(table->dongles);	
