@@ -3,11 +3,12 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
 
 SRCDIR = .
+OBJDIR = objs
 DEPDIR = $(SRCDIR)/.deps
 INCDIR = includes
 
-SRCS = main.c parsing.c work.c init.c time.c
-OBJS = $(SRCS:.c=.o)
+SRCS = main.c parsing.c work.c init.c time.c request.c queue.c
+OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
 INCLUDES = -I$(INCDIR)
 
@@ -19,14 +20,16 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-%.o: %.c
+$(OBJDIR)/%.o: %.c
+	@mkdir -p $(OBJDIR)
 	@mkdir -p $(DEPDIR)
 	$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDES) -c $< -o $@
 
 -include $(SRCS:%.c=$(DEPDIR)/%.d)
+
 clean: 
 	rm -rf $(DEPDIR)
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
