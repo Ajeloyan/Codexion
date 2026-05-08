@@ -6,11 +6,11 @@
 /*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 02:28:02 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/08 22:20:12 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/08 22:40:03 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <codexion.h>
+#include "codexion.h"
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>

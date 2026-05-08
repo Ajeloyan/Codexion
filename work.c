@@ -6,7 +6,7 @@
 /*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 20:07:13 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/08 16:47:19 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/08 22:39:12 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,10 @@
 
 void	*hello(void *arg)
 {
-	int i;
 	int	id;
 	t_coder *coder = (t_coder *)arg;
 
-	i = 0;
-	while (i < coder->table->number_of_compiles_required)
+	while (coder->nb_compiles < coder->table->number_of_compiles_required)
 	{
 		id = coder->id;
 		pthread_mutex_lock(&coder->table->print_lock);
@@ -38,7 +36,7 @@ void	*hello(void *arg)
 		printf("%lld %d is refactoring\n", get_time(coder->table), id);
 		pthread_mutex_unlock(&coder->table->print_lock);
 		ft_usleep((coder->table->time_to_refactor), coder->table);
-		i++;
+		coder->nb_compiles++;
 	}
 	return (NULL);
 }
