@@ -6,7 +6,7 @@
 /*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 02:09:00 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/08 22:27:22 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/09 00:06:48 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int init_coders(t_coder **coders, t_data *table)
         (*coders)[i].right_dongle = &table->dongles[(i + 1) % table->number_of_coders];
         (*coders)[i].last_compile_start = get_time(table);
         (*coders)[i].nb_compiles = 0;
-        pthread_create(&(*coders)[i].thread, NULL, hello, &(*coders)[i]);
+        pthread_create(&(*coders)[i].thread, NULL, routine, &(*coders)[i]);
         i++;
     }
     return (0);

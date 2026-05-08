@@ -6,7 +6,7 @@
 /*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 01:50:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/08 23:40:01 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/09 00:07:39 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ typedef struct s_coder
 	int				nb_compiles;
 }					t_coder;
 
-void				*hello(void *arg);
+void				*routine(void *arg);
 void				release_dongle(t_coder *coder, t_dongle *dongle);
-void				release_dongle(t_coder *coder, t_dongle *dongle);
+void				take_dongle(t_coder *coder, t_dongle *dongle);
 int					main(int argc, char **argv);
 
 int					parsing(int argc, char **argv);

@@ -7,7 +7,7 @@ OBJDIR = objs
 DEPDIR = $(SRCDIR)/.deps
 INCDIR = includes
 
-SRCS = main.c parsing.c work.c init.c time.c request.c queue.c
+SRCS = main.c parsing.c work.c init.c time.c request.c queue.c dongle.c
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
 INCLUDES = -I$(INCDIR)
