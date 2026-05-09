@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   dongle.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 22:42:16 by armenag           #+#    #+#             */
-/*   Updated: 2026/05/09 00:22:05 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/09 20:03:59 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/codexion.h"
+#include <stdio.h>
 
 void take_dongle(t_coder *coder, t_dongle *dongle)
 {
@@ -22,10 +23,11 @@ void take_dongle(t_coder *coder, t_dongle *dongle)
     pthread_mutex_lock(&dongle->lock);
     entry_queue(&dongle->queue, rq);
     while(dongle->is_taken == 1 || coder->id != dongle->queue.request[0].coder_id)
-    {
         pthread_cond_wait(&dongle->cond, &dongle->lock);
-    }
     rq = pop_prio(&dongle->queue);
+    pthread_mutex_lock(&coder->table->print_lock);
+    printf("%lld %d has taken a dongle\n", get_time(coder->table), coder->id);
+    pthread_mutex_unlock(&coder->table->print_lock);
     dongle->is_taken = 1;
     current_time = get_time(coder->table);
     time_to_wait = dongle->available_at - current_time;

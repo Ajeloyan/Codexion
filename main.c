@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 02:28:02 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/08 22:40:03 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/09 22:41:07 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ void cleanup(t_data *table, t_coder *coders)
 				free(table->dongles[i].queue.request);
 			i++;
 		}
-		free(table->dongles);	
+		free(table->dongles);
 	}
 	i = 0;
+	pthread_mutex_destroy(&table->print_lock);
 	pthread_mutex_destroy(&table->print_lock);
 	if (coders)
 		free(coders);
@@ -51,10 +52,28 @@ int join_threads(t_data *table, t_coder **coders)
 	return (0);
 }
 
+int start_simulation(t_data *table, t_coder *coders, t_coder *monitor)
+{
+	int i;
+	
+	i = 0;
+	get_start_time(table);
+	while (i < table->number_of_coders)
+	{
+		coders[i].last_compile_start = get_time(table);
+		if (pthread_create(&monitor.thread))
+		if (pthread_create(&coders[i].thread, NULL, routine, &coders[i]) != 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int main(int argc, char **argv)
 {
 	t_coder *coders;
 	t_data table;
+	t_coder *monitor;
 
 	if (init_table(&table, argc, argv) != 0)
 		return (1);
@@ -63,6 +82,12 @@ int main(int argc, char **argv)
 		cleanup(&table, coders);
 		return (1);
 	}
+	if (start_simulation(&table, coders) != 0)
+	{
+		cleanup(&table, coders);
+		return(1);
+	}
+	monitor_routine(monitor, coders, &table);
 	join_threads(&table, &coders);
 	cleanup(&table, coders);
 	return (0);

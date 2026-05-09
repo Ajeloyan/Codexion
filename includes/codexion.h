@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 01:50:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/09 00:07:39 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/09 22:37:20 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_data
 	pthread_mutex_t	print_lock;
 	t_dongle		*dongles;
 	long long		start_time;
+	int				stop_simulation;
+	pthread_mutex_t	state_lock;
 }					t_data;
 
 typedef struct s_coder
@@ -67,6 +69,9 @@ typedef struct s_coder
 void				*routine(void *arg);
 void				release_dongle(t_coder *coder, t_dongle *dongle);
 void				take_dongle(t_coder *coder, t_dongle *dongle);
+
+void				monitor_routine(t_coder *monitor, t_coder *coder,
+						t_data *table);
 int					main(int argc, char **argv);
 
 int					parsing(int argc, char **argv);

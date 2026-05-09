@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 02:09:00 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/09 00:06:48 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/09 20:26:41 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int init_coders(t_coder **coders, t_data *table)
         (*coders)[i].right_dongle = &table->dongles[(i + 1) % table->number_of_coders];
         (*coders)[i].last_compile_start = get_time(table);
         (*coders)[i].nb_compiles = 0;
-        pthread_create(&(*coders)[i].thread, NULL, routine, &(*coders)[i]);
         i++;
     }
     return (0);
@@ -77,7 +76,9 @@ int init_table(t_data *table, int argc, char **argv)
         return (1);
     if (init_dongles(table) != 0)
         return (1);
-    get_start_time(table);
+    if (pthread_mutex_init(&table->state_lock, NULL) != 0)
+        return (1);
+    table->stop_simulation = 0;
     return (0);
 }
 
