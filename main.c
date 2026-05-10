@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 02:28:02 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/09 22:41:07 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/10 22:40:54 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int join_threads(t_data *table, t_coder **coders)
 	return (0);
 }
 
-int start_simulation(t_data *table, t_coder *coders, t_coder *monitor)
+int start_simulation(t_data *table, t_coder *coders)
 {
 	int i;
 	
@@ -61,7 +61,7 @@ int start_simulation(t_data *table, t_coder *coders, t_coder *monitor)
 	while (i < table->number_of_coders)
 	{
 		coders[i].last_compile_start = get_time(table);
-		if (pthread_create(&monitor.thread))
+		// if (pthread_create(&monitor.thread))
 		if (pthread_create(&coders[i].thread, NULL, routine, &coders[i]) != 0)
 			return (1);
 		i++;
@@ -73,7 +73,6 @@ int main(int argc, char **argv)
 {
 	t_coder *coders;
 	t_data table;
-	t_coder *monitor;
 
 	if (init_table(&table, argc, argv) != 0)
 		return (1);
@@ -87,7 +86,7 @@ int main(int argc, char **argv)
 		cleanup(&table, coders);
 		return(1);
 	}
-	monitor_routine(monitor, coders, &table);
+	monitor_routine(coders, &table);
 	join_threads(&table, &coders);
 	cleanup(&table, coders);
 	return (0);

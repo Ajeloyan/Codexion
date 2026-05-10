@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 01:50:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/09 22:37:20 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/10 22:39:10 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ void				*routine(void *arg);
 void				release_dongle(t_coder *coder, t_dongle *dongle);
 void				take_dongle(t_coder *coder, t_dongle *dongle);
 
-void				monitor_routine(t_coder *monitor, t_coder *coder,
-						t_data *table);
+void				monitor_routine(t_coder *coder, t_data *table);
 int					main(int argc, char **argv);
 
 int					parsing(int argc, char **argv);
@@ -89,5 +88,10 @@ void				entry_queue(t_queue *queue, t_request rq);
 t_request			pop_prio(t_queue *queue);
 void				swap_request(t_queue *queue, int current, int parent);
 t_request			create_request(t_coder *coder);
+
+void				print_action(t_coder *coder, char *action);
+void				refactoring(t_coder *coder);
+void				debugging(t_coder *coder);
+void				compiling(t_coder *coder);
 
 #endif

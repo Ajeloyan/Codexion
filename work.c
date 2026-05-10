@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 20:07:13 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/09 21:24:14 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/10 22:31:37 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-
-void	compiling(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->table->print_lock);
-	printf("%lld %d is compiling\n", get_time(coder->table), coder->id);
-	pthread_mutex_unlock(&coder->table->print_lock);
-	ft_usleep(coder->table->time_to_compile, coder->table);
-}
-
-void	debugging(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->table->print_lock);
-	printf("%lld %d is debugging\n", get_time(coder->table), coder->id);
-	pthread_mutex_unlock(&coder->table->print_lock);
-	ft_usleep(coder->table->time_to_debug, coder->table);
-}
-
-void	refactoring(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->table->print_lock);
-	printf("%lld %d is refactoring\n", get_time(coder->table), coder->id);
-	pthread_mutex_unlock(&coder->table->print_lock);
-	ft_usleep(coder->table->time_to_refactor, coder->table);
-}
 
 void dongle_distrib(t_coder *coder)
 {
@@ -66,7 +42,9 @@ void	*routine(void *arg)
 	{
 		dongle_distrib(coder);
 		if (coder->table->stop_simulation == 1)
+		{
 			return (NULL);
+		}
 		coder->last_compile_start = get_time(coder->table);
 		compiling(coder);
 		release_dongle(coder, coder->left_dongle);
