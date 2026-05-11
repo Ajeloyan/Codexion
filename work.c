@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 20:07:13 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/10 22:31:37 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/11 20:56:52 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,23 @@ void	*routine(void *arg)
 	while(coder->nb_compiles < coder->table->number_of_compiles_required)
 	{
 		dongle_distrib(coder);
+		pthread_mutex_lock(&coder->table->state_lock);
 		if (coder->table->stop_simulation == 1)
 		{
+			pthread_mutex_unlock(&coder->table->state_lock);
 			return (NULL);
 		}
 		coder->last_compile_start = get_time(coder->table);
+		pthread_mutex_unlock(&coder->table->state_lock);
 		compiling(coder);
 		release_dongle(coder, coder->left_dongle);
 		release_dongle(coder, coder->right_dongle);
 		debugging(coder);
 		refactoring(coder);
+		pthread_mutex_lock(&coder->table->state_lock);
 		coder->nb_compiles++;
+		pthread_mutex_unlock(&coder->table->state_lock);
+
 	}
 	return (NULL);
 }

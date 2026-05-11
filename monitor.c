@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 21:25:03 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/10 23:01:40 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/11 20:52:55 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ void monitor_routine(t_coder *coder, t_data *table)
         if (coders_done == coder->table->number_of_coders)
             table->stop_simulation = 1;
         usleep(1000);
+    }
+    i = 0;
+    while(i < table->number_of_coders)
+    {
+        pthread_cond_broadcast(&table->dongles[i].cond);
+        i++;
     }
     return;
 }

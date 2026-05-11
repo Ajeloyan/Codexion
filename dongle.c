@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 22:42:16 by armenag           #+#    #+#             */
-/*   Updated: 2026/05/10 22:49:14 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/11 20:59:03 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,18 @@ void take_dongle(t_coder *coder, t_dongle *dongle)
     while(dongle->is_taken == 1 || coder->id != dongle->queue.request[0].coder_id)
         pthread_cond_wait(&dongle->cond, &dongle->lock);
     rq = pop_prio(&dongle->queue);
-    pthread_mutex_lock(&coder->table->print_lock);
     pthread_mutex_lock(&coder->table->state_lock);
+    pthread_mutex_lock(&coder->table->print_lock);
     if (coder->table->stop_simulation == 1)
     {
-        pthread_mutex_unlock(&coder->table->state_lock);
         pthread_mutex_unlock(&coder->table->print_lock);
+        pthread_mutex_unlock(&coder->table->state_lock);
+        pthread_mutex_unlock(&dongle->lock);
         return;
     }
     printf("%lld %d has taken a dongle\n", get_time(coder->table), coder->id);
-    pthread_mutex_unlock(&coder->table->state_lock);
     pthread_mutex_unlock(&coder->table->print_lock);
+    pthread_mutex_unlock(&coder->table->state_lock);
     dongle->is_taken = 1;
     current_time = get_time(coder->table);
     time_to_wait = dongle->available_at - current_time;

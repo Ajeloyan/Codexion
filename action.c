@@ -6,7 +6,7 @@
 /*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 22:31:44 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/10 22:37:54 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/11 20:47:57 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ void	refactoring(t_coder *coder)
 
 void print_action(t_coder *coder, char *action)
 {
-	pthread_mutex_lock(&coder->table->print_lock);
     pthread_mutex_lock(&coder->table->state_lock);
+	pthread_mutex_lock(&coder->table->print_lock);
     if (coder->table->stop_simulation == 1)
     {
-	    pthread_mutex_unlock(&coder->table->print_lock);
 	    pthread_mutex_unlock(&coder->table->state_lock);
+	    pthread_mutex_unlock(&coder->table->print_lock);
         return;
     }
     printf("%lld %d %s\n", get_time(coder->table), coder->id, action);
