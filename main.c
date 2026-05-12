@@ -6,7 +6,7 @@
 /*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 02:28:02 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/13 00:29:04 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/13 01:24:39 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int join_threads(t_data *table, t_coder **coders)
 	i = 0;
 	while (i < table->number_of_coders)
 	{
-		pthread_join((*coders)[i].thread, NULL);
+		if (pthread_join((*coders)[i].thread, NULL) != 0)
+			return (print_error("Thread join failed"));
 		i++;
 	}
 	return (0);
@@ -57,11 +58,11 @@ int start_simulation(t_data *table, t_coder *coders)
 	int i;
 	
 	i = 0;
-	get_start_time(table);
+	if (get_start_time(table) != 0)
+		return (1);
 	while (i < table->number_of_coders)
 	{
 		coders[i].last_compile_start = get_time(table);
-		// if (pthread_create(&monitor.thread))
 		if (pthread_create(&coders[i].thread, NULL, routine, &coders[i]) != 0)
 			return (1);
 		i++;
@@ -87,7 +88,11 @@ int main(int argc, char **argv)
 		return(1);
 	}
 	monitor_routine(coders, &table);
-	join_threads(&table, &coders);
+	if (join_threads(&table, &coders) != 0)
+	{
+		cleanup(&table, coders);
+		return (1);
+	}
 	cleanup(&table, coders);
 	return (0);
 }

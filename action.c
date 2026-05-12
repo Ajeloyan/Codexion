@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 22:31:44 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/11 20:47:57 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/13 01:22:54 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 void	compiling(t_coder *coder)
 {
 	print_action(coder, "is compiling");
-    ft_usleep(coder->table->time_to_refactor, coder->table);
+    ft_usleep(coder->table->time_to_compile, coder->table);
 }
 
 void	debugging(t_coder *coder)
 {
 	print_action(coder, "is debugging");
-    ft_usleep(coder->table->time_to_refactor, coder->table);
+    ft_usleep(coder->table->time_to_debug, coder->table);
 }
 
 void	refactoring(t_coder *coder)

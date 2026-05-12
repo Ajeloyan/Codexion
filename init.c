@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 02:09:00 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/09 20:26:41 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/13 01:09:38 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,15 @@ int init_table(t_data *table, int argc, char **argv)
     if (parsing(argc, argv) != 0)
         return (1);
     table->number_of_coders = atoi(argv[1]);
+    if (table->number_of_coders <= 0)
+        return (print_error("number_of_coders must be greater than 0"));
     table->time_to_burnout = atoi(argv[2]);
     table->time_to_compile = atoi(argv[3]);
     table->time_to_debug = atoi(argv[4]);
     table->time_to_refactor = atoi(argv[5]);
     table->number_of_compiles_required = atoi(argv[6]);
+    if (table->number_of_compiles_required <= 0)
+        return (print_error("number_of_compiles_required must be greater than 0"));
     table->dongle_cooldown = atoi(argv[7]);
     if (check_scheduler(table, argv[8]) != 0)
         return (1);

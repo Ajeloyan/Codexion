@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 01:50:57 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/10 22:39:10 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/13 01:45:45 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void				release_dongle(t_coder *coder, t_dongle *dongle);
 void				take_dongle(t_coder *coder, t_dongle *dongle);
 
 void				monitor_routine(t_coder *coder, t_data *table);
+void				wake_up(t_data *table);
 int					main(int argc, char **argv);
 
 int					parsing(int argc, char **argv);
@@ -80,9 +81,10 @@ int					init_table(t_data *table, int argc, char **argv);
 int					init_coders(t_coder **coders, t_data *table);
 int					init_queue(t_queue *queue, int max_coders);
 
-void				get_start_time(t_data *table);
+int					get_start_time(t_data *table);
 long long			get_time(t_data *table);
 void				ft_usleep(long long time_in_ms, t_data *table);
+int					print_error(char *str);
 
 void				entry_queue(t_queue *queue, t_request rq);
 t_request			pop_prio(t_queue *queue);
