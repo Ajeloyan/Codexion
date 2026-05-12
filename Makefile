@@ -37,4 +37,4 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME) 1 350 100 100 100 3 50 "edf"
+	./$(NAME) 10 400 100 100 100 3 50 "edf"

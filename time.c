@@ -6,7 +6,7 @@
 /*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 02:11:43 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/08 16:54:48 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/13 00:38:49 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ void ft_usleep(long long time_in_ms, t_data *table)
     start = get_time(table);
     while ((get_time(table) - start) < time_in_ms)
     {
+        pthread_mutex_lock(&table->state_lock);
+        if (table->stop_simulation == 1)
+        {
+            pthread_mutex_unlock(&table->state_lock);
+            break;
+        }
+        pthread_mutex_unlock(&table->state_lock);
         usleep(500);
     }
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 02:28:02 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/10 22:40:54 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/13 00:29:04 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void cleanup(t_data *table, t_coder *coders)
 	}
 	i = 0;
 	pthread_mutex_destroy(&table->print_lock);
-	pthread_mutex_destroy(&table->print_lock);
+	pthread_mutex_destroy(&table->state_lock);
 	if (coders)
 		free(coders);
 }

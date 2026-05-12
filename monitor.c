@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 21:25:03 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/11 20:52:55 by ajeloyan         ###   ########.fr       */
+/*   Updated: 2026/05/13 00:34:41 by armenag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ void monitor_routine(t_coder *coder, t_data *table)
     i = 0;
     while(i < table->number_of_coders)
     {
+        pthread_mutex_lock(&table->dongles[i].lock);
         pthread_cond_broadcast(&table->dongles[i].cond);
+        pthread_mutex_unlock(&table->dongles[i].lock);
         i++;
     }
     return;
