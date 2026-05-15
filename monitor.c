@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 21:25:03 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/13 01:48:48 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/15 20:02:28 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	check_coders(t_coder *coder, t_data *table)
 	if (coders_done == table->number_of_coders)
 		table->stop_simulation = 1;
 }
+
 void	wake_up(t_data *table)
 {
 	int	i;
@@ -55,6 +56,7 @@ void	wake_up(t_data *table)
 		i++;
 	}
 }
+
 void	monitor_routine(t_coder *coder, t_data *table)
 {
 	while (table->stop_simulation != 1)

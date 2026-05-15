@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armenag <armenag@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ajeloyan <ajeloyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 02:28:02 by ajeloyan          #+#    #+#             */
-/*   Updated: 2026/05/13 01:24:39 by armenag          ###   ########.fr       */
+/*   Updated: 2026/05/15 20:02:02 by ajeloyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void cleanup(t_data *table, t_coder *coders)
+void	cleanup(t_data *table, t_coder *coders)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (table->dongles)
@@ -39,9 +39,9 @@ void cleanup(t_data *table, t_coder *coders)
 		free(coders);
 }
 
-int join_threads(t_data *table, t_coder **coders)
+int	join_threads(t_data *table, t_coder **coders)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < table->number_of_coders)
@@ -53,10 +53,10 @@ int join_threads(t_data *table, t_coder **coders)
 	return (0);
 }
 
-int start_simulation(t_data *table, t_coder *coders)
+int	start_simulation(t_data *table, t_coder *coders)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (get_start_time(table) != 0)
 		return (1);
@@ -70,10 +70,10 @@ int start_simulation(t_data *table, t_coder *coders)
 	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_coder *coders;
-	t_data table;
+	t_coder	*coders;
+	t_data	table;
 
 	if (init_table(&table, argc, argv) != 0)
 		return (1);
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 	if (start_simulation(&table, coders) != 0)
 	{
 		cleanup(&table, coders);
-		return(1);
+		return (1);
 	}
 	monitor_routine(coders, &table);
 	if (join_threads(&table, &coders) != 0)
